@@ -10,7 +10,8 @@ std::cout << "1. medidores de energia" << std::endl;
 std::cout << "2. medidores de água " << std::endl;
 std::cout << "3. religadores" << std::endl;
 std::cout << "4. sair da aplicação" << std::endl;
-
+//raul esteve aqui
+//para a linguagem chcp.com 65001
 while()
 
 
