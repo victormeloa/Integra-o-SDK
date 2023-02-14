@@ -1,10 +1,5 @@
-#include <iostream>
-#include "menu_options.h"
-#include "meter_energy.h"
-#include "meter_water.h"
-#include "religadores.h"
 #include "controle.h"
-#include "textos.h"
+
 
 int main()
 { 
