@@ -5,6 +5,7 @@ add_executable(
     test_apolo.cpp
     test_cronos.cpp
     test_zeus.cpp
+    test_eletraenergysolution.cpp
 
 )
 
