@@ -1,10 +1,8 @@
 #pragma once
 
 #include "console.h"
+#include "utility.h"
 #include "EletraEnergySolutions.h"
-#include "medidor_de_energia.h"
-#include <fstream>
-
 
 class Application
 {
@@ -16,11 +14,10 @@ public:
     void delete_meter();
     void run_app();
     void clear();
+    void switch_adicionar_medidor();
+    
 private:
-    Menus my_menu;
+    Console my_menu;
     EletraEnergySolutions ees;
-    std::string file_path = ".\\meters.txt";
-
-    std::ofstream output_file;
 };
 

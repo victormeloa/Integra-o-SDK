@@ -22,7 +22,9 @@ add_library(
     src/Application.cpp
     src/EletraEnergySolutions.cpp
     src/medidor_de_energia.cpp
-    src/Menus.cpp
+    src/console.cpp
+    src/fabrica_de_medidor.cpp
+    src/Utility.cpp
 
 )
 

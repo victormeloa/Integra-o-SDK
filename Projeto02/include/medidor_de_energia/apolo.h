@@ -1,5 +1,5 @@
 #pragma once
-#include "medidor_de_energia.h"
+#include "medidor_de_energia/medidor_de_energia.h"
 #include <string>
 
 class Apolo : public MedidorDeEnergia

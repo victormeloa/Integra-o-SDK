@@ -1,27 +1,24 @@
-#include "EletraEnergySolutions.h"
 #include "medidor_de_energia/ares.h"
 #include "medidor_de_energia/zeus.h"
 #include "medidor_de_energia/cronos.h"
 #include "medidor_de_energia/apolo.h"
-#include "medidor_de_energia.h"
+#include "medidor_de_energia/medidor_de_energia.h"
 #include "Application.h"
-#include <string>
-#include <iostream>
-#include <list>
+#include "fabrica_de_medidor.h"
 
 Application::Application()
-    : output_file(file_path, std::ios::app)
 {
 }
 
 void Application::run_app()
 {
+    Utility selecao;
     bool run = true;
     while (run)
     {
         my_menu.menu_intro_switch();
         int numero_da_selecao = my_menu.get_int_by_user();
-        Selection(selection) = my_menu.get_seletor_2(numero_da_selecao);
+        Selection(selection) = selecao.get_seletor_2(numero_da_selecao);
         switch (selection)
         {
         case Selection::LINHAS_DE_MEDIDORES:
@@ -35,29 +32,32 @@ void Application::run_app()
         case Selection::MODELO_DA_LINHA_APOLO:
             my_menu.menu_generic_line("APOLO");
             my_menu.menu_seperador();
-            ees.list_meters_by_line(MeterLine::APOLO);
+            my_menu.print_meter_list(ees.get_lista_de_medidores_por_linha(MeterLine::APOLO));
             break;
 
         case Selection::MODELO_DA_LINHA_CRONOS:
             my_menu.menu_generic_line("CRONOS");
             my_menu.menu_seperador();
-            ees.list_meters_by_line(MeterLine::CRONOS);
+            my_menu.print_meter_list(ees.get_lista_de_medidores_por_linha(MeterLine::CRONOS));
             break;
 
         case Selection::MODELO_DA_LINHA_ARES:
             my_menu.menu_generic_line("ARES");
             my_menu.menu_seperador();
-            ees.list_meters_by_line(MeterLine::ARES);
+            my_menu.print_meter_list(ees.get_lista_de_medidores_por_linha(MeterLine::ARES));
             break;
 
         case Selection::MODELO_DA_LINHA_ZEUS:
             my_menu.menu_generic_line("ZEUS");
             my_menu.menu_seperador();
-            ees.list_meters_by_line(MeterLine::ZEUS);
+            my_menu.print_meter_list(ees.get_lista_de_medidores_por_linha(MeterLine::ZEUS));
             break;
 
         case Selection::ADICIONAR_MEDIDOR_DE_ENERGIA:
             add_meter();
+            break;
+        case Selection::ADICIONAR_VARIOS_MEDIDORES_DE_ENERGIA:
+            switch_adicionar_medidor();
             break;
         case Selection::REMOVER_MEDIDOR_DE_ENERGIA:
             delete_meter();
@@ -71,6 +71,8 @@ void Application::run_app()
         case Selection::UNKNOWN:
             my_menu.menu_invalids_options();
             break;
+
+
         }
     }
 }
@@ -80,73 +82,60 @@ void Application::add_meter()
     std::string model;
     int id;
     bool run_app = true;
+    Utility converter;
 
     while (run_app)
     {
-
-        my_menu.menu_seletor();
-        int numero_da_selecao = 0;
-        numero_da_selecao = my_menu.get_int_by_user();
-        Seletor seletor = my_menu.get_seletor(numero_da_selecao);
-
-        switch (seletor)
+        try
         {
-        case Seletor::APOLO:
-            add_multiples_meters(MeterLine::APOLO);
-            break;
+            my_menu.menu_seletor();
+            int numero_da_selecao = my_menu.get_int_by_user();
 
-        case Seletor::CRONOS:
-            add_multiples_meters(MeterLine::CRONOS);
-            break;
-
-        case Seletor::ARES:
-            add_multiples_meters(MeterLine::ARES);
-            break;
-
-        case Seletor::ZEUS:
-            add_multiples_meters(MeterLine::ZEUS);
-            break;
-        case Seletor::SAIR:
+            if(numero_da_selecao == 5)
+            {
+                run_app=false;
+                break;
+            }
+            auto meter_line = converter.converter_para_meterline(numero_da_selecao);
+            my_menu.menu_model();
+            model = my_menu.get_string_by_user();
+            my_menu.menu_id();
+            id = my_menu.get_int_by_user();
+            auto meter = create_meter(meter_line, model, id);
+            ees.adicionar_medidor(*meter);
+            mostrar_lista_de_medidores();
+        }
+        
+        catch (const std::exception &e)
+        {
             run_app = false;
-            break;
-        case Seletor::UNKNOWN:
-            my_menu.menu_invalid_option();
-            break;
         }
     }
 }
 
 void Application::add_multiples_meters(MeterLine type)
 {
-    my_menu.menu_add();
     int num = my_menu.get_int_by_user();
-
     std::string model;
     int id;
-
     for (int i = 0; i < num; i++)
     {
         my_menu.menu_insercao();
         model = my_menu.get_string_by_user();
         my_menu.menu_id();
         id = my_menu.get_int_by_user();
-        ees.add_meter(type, model, id);
-        my_menu.menu_intro_switch();
+        auto meter = create_meter(type, model, id);
+        ees.adicionar_medidor(*meter);
     }
 
     mostrar_lista_de_medidores();
-    add_meter();
-    run_app();
+    
 }
 
 void Application::mostrar_lista_de_medidores()
 {
-
     my_menu.menu_seperador();
-    for (const auto &meter : ees.get_lista_de_medidores())
-    {
-        std::cout << meter.get_id() << " -------- " << meter.mostrar_informacoes_do_medidor() << std::endl;
-    }
+    my_menu.print_meter_list(ees.get_lista_de_medidores());
 }
 
 void Application::delete_meter()
@@ -157,7 +146,6 @@ void Application::delete_meter()
         int d;
         my_menu.menu_delete();
         d = my_menu.get_int_by_user();
-
         for (auto it = ees.get_lista_de_medidores().begin(); it != ees.get_lista_de_medidores().end(); it++)
         {
             if (it->get_id() == d)
@@ -167,7 +155,6 @@ void Application::delete_meter()
             }
         }
         my_menu.menu_delete_2();
-        my_menu.menu_delete_3();
         mostrar_lista_de_medidores();
         m = my_menu.get_string_by_user();
 
@@ -181,5 +168,28 @@ void Application::delete_meter()
 void Application::clear()
 {
     system("cls");
-    my_menu.menu_intro_switch();
 }
+
+void Application::switch_adicionar_medidor()
+{   
+    my_menu.menu_add_meter();
+    my_menu.menu_add_line();
+    int n = my_menu.get_int_by_user();
+    my_menu.menu_add();
+    switch (n)
+    {
+    case 1:
+        add_multiples_meters(MeterLine::APOLO);
+        break;
+    case 2:
+        add_multiples_meters(MeterLine::CRONOS);
+        break;
+    case 3:
+        add_multiples_meters(MeterLine::ARES);
+        break;
+    case 4:
+        add_multiples_meters(MeterLine::ZEUS);
+        break;
+    }
+}
+

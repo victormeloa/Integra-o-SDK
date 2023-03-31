@@ -1,8 +1,13 @@
-#include "medidor_de_energia.h"
+#include "medidor_de_energia/medidor_de_energia.h"
 
 MedidorDeEnergia::MedidorDeEnergia(std::string line, std::string model, int id, MeterLine meter_line)
     : line(line), model(model), id(id), meter_line(meter_line)
 {
+}
+
+MedidorDeEnergia::MedidorDeEnergia()
+{
+
 }
 
 std::string MedidorDeEnergia::mostrar_informacoes_do_medidor() const 
@@ -34,3 +39,5 @@ auto MedidorDeEnergia::get_meter_line() const -> MeterLine
 {
     return meter_line;
 }
+
+

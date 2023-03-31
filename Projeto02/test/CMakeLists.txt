@@ -1,12 +1,13 @@
 add_executable(
     ${PROJECT_NAME}test
     main.cpp
-    test_ares.cpp
-    test_apolo.cpp
-    test_cronos.cpp
-    test_zeus.cpp
-    test_eletraenergysolution.cpp
-
+    medidor_de_energia/test_ares.cpp
+    medidor_de_energia/test_apolo.cpp
+    medidor_de_energia/test_cronos.cpp
+    medidor_de_energia/test_zeus.cpp
+    test_medidor_de_energia.cpp
+    test_EletraEnergySolutions.cpp
+    test_Utility.cpp
 )
 
 target_include_directories(
