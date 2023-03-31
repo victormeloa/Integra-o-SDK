@@ -22,7 +22,7 @@ TEST_CASE ("teste do switch do selection 1")
     REQUIRE(test_switch_selec_2 == Selection::ADICIONAR_MEDIDOR_DE_ENERGIA);
 }
 
-TEST_CASE ("teste do switch do selection 0")
+TEST_CASE ("teste do  switch do selection 0")
 {
     Utility test_switch_selec;
     auto test_switch_selec_2 = test_switch_selec.get_seletor_2(4);
