@@ -52,3 +52,43 @@ auto EletraEnergySolutions::get_lista_de_medidores_por_linha(const MeterLine &li
 
     return linhas;
 }
+
+void EletraEnergySolutions::delete_meters_for_id(int id)
+{
+    for (auto it = get_lista_de_medidores().begin(); it !=get_lista_de_medidores().end(); it++)
+    {
+     if (it->get_id() == id)
+        {
+          it = get_lista_de_medidores().erase(it);
+          break;
+        }
+    }
+
+}
+
+bool check_if_exist(const std::vector<MeterLine> &lines, const MeterLine &line_compare)
+{
+    for (const auto &line : lines)
+    {
+        if (line == line_compare)
+            return false;
+    }
+    return true;
+}
+
+auto EletraEnergySolutions::get_lines_by_meter_line() -> std::vector<MeterLine>
+{
+    std::vector<MeterLine> lines;
+
+    for (const auto &medidor : lista_de_medidores)
+    {
+       if (check_if_exist(lines, medidor.get_meter_line()))
+        {
+            lines.emplace_back(medidor.get_meter_line());
+        }
+    }
+    return lines;
+}
+
+
+

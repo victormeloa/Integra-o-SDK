@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package vma;
+
+import "projeto02.proto";
+
+service Projeto02
+{
+    rpc GetAllMetersLines(EmptyRequest) returns (GetMeterLineReply);
+    rpc GetAllMetersEnergy(EmptyRequest) returns (GetMedidorReply);
+    rpc getMeters_for_MeterLine(MeterLineRequest) returns (GetMedidorReply);
+    rpc get_lines_by_meter_list(EmptyRequest) returns (GetMeterLineReply);
+    rpc AddMeterline(AddMeterlineRequest) returns (GetMedidorReply);
+    rpc RemoveMeterLine(RemoveMeterLineRequest) returns (GetMedidorReply);
+    // rpc ModelLineApolo(ModelLineApoloRequest) returns (GetMeterLineReply);
+    // rpc ModelLineCronos(ModelLineCronosRequest) returns (GetMeterLineReply);
+    // rpc ModelLineAres(ModelLineAresRequest) returns (GetMeterLineReply);
+    // rpc ModelLineZeus(ModelLineZeusRequest) returns (GetMeterLineReply);
+    // rpc getModelsMetersEnergy(EmptyRequest) returns (GetMeterLineReply);
+}

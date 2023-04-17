@@ -8,6 +8,8 @@ add_executable(
     test_medidor_de_energia.cpp
     test_EletraEnergySolutions.cpp
     test_Utility.cpp
+    services/test_utility_services
+   
 )
 
 target_include_directories(

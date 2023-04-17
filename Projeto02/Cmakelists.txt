@@ -11,6 +11,10 @@ add_subdirectory(
     test
 )
 
+add_subdirectory(
+    proto
+)
+
 add_library(
     ${PROJECT_NAME}lib
 
@@ -25,6 +29,9 @@ add_library(
     src/console.cpp
     src/fabrica_de_medidor.cpp
     src/Utility.cpp
+    src/Services/Projeto02sevices.cpp
+    src/Services/Projeto02Utilityservices.cpp
+
 
 )
 
@@ -40,7 +47,8 @@ target_include_directories(
     ${PROJECT_NAME}lib
 
     PUBLIC  
-    ./include
+        ./include
+        ${CMAKE_CURRENT_BINARY_DIR}
  
 )
 
@@ -56,6 +64,14 @@ target_link_libraries(
     ${PROJECT_NAME}
     
     PRIVATE
-    ${PROJECT_NAME}lib
+        ${PROJECT_NAME}lib
 
 )
+
+target_link_libraries(
+    ${PROJECT_NAME}lib
+    
+    PUBLIC
+        Projeto02Proto
+)
+

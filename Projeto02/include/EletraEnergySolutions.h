@@ -2,6 +2,7 @@
 
 #include "medidor_de_energia/medidor_de_energia.h"
 #include <vector>
+#include <list>
 
 class EletraEnergySolutions
 {
@@ -10,6 +11,8 @@ public:
     void adicionar_medidor(MedidorDeEnergia meter);
     auto get_lista_de_medidores() -> std::vector<MedidorDeEnergia> &;
     auto get_lista_de_medidores_por_linha(const MeterLine &line) ->std::vector<MedidorDeEnergia>;
+    void delete_meters_for_id(int id);
+    auto get_lines_by_meter_line() -> std::vector<MeterLine>;
 
 private:
     std::vector<MedidorDeEnergia> lista_de_medidores;

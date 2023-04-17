@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package vma;
+
+enum MeterlineProto
+{
+    UNKNOWN = 0;
+    APOLO = 1;
+    CRONOS = 2;
+    ARES = 3;
+    ZEUS = 4;
+}
+
+message MedidorProto
+{
+    MeterlineProto line = 1;
+    string model = 2;
+    int32 id = 3; 
+}
+
+message AddMeterlineRequest
+{
+    repeated MedidorProto medidor = 1;
+}
+
+message RemoveMeterLineRequest
+{
+    repeated int32 id = 1;
+}
+
+message EmptyRequest
+{
+}
+
+message GetMeterLineReply
+{
+    repeated MeterlineProto line = 1;
+}
+
+message GetMedidorReply
+{
+    repeated MedidorProto medidor = 1;
+}
+
+message MeterLineRequest
+{
+     MeterlineProto meter_line = 1;
+}
+message UNKNOWNReply
+{
+    string option_invalid = 1;
+}
